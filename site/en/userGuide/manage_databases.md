@@ -37,6 +37,7 @@ Use [MilvusClient](https://milvus.io/api-reference/node/v2.4.x/Client/MilvusClie
     <a href="#python">Python </a>
     <a href="#java">Java</a>
     <a href="#javascript">Node.js</a>
+    <a href="#golang">Golang</a>
 </div>
 
 ```python
@@ -90,6 +91,32 @@ console.log(res);
 // }
 ```
 
+```go
+package main
+
+import (
+	"context"
+	"github.com/milvus-io/milvus-sdk-go/v2/client"
+	"log"
+)
+
+func main() {
+  ctx := context.Background()
+  config := client.Config{
+    Address: "localhost:19530",
+  }
+  client, err := client.NewClient(ctx, config)
+  if err != nil {
+    log.Fatal("connect err:", err)
+  }
+  defer client.Close()
+  err = client.CreateDatabase(ctx, "my_database")
+  if err != nil {
+  	log.Fatal("create database err:", err)
+  }
+}
+```
+
 The above code snippets connects to the default database and creates a new database named `my_database`.
 
 ## Use a database
@@ -102,6 +129,7 @@ To change the default database, do as follows:
     <a href="#python">Python </a>
     <a href="#java">Java</a>
     <a href="#javascript">Node.js</a>
+    <a href="#golang">Golang</a>
 </div>
 
 ```python
@@ -120,6 +148,9 @@ res = await client.useDatabase({
 
 console.log(res);
 ```
+```go
+client.UsingDatabase(ctx, "my_database")
+```
 
 You can also set a database to use upon connecting to your Milvus cluster as follows:
 
@@ -127,6 +158,7 @@ You can also set a database to use upon connecting to your Milvus cluster as fol
     <a href="#python">Python </a>
     <a href="#java">Java</a>
     <a href="#javascript">Node.js</a>
+    <a href="#golang">Golang</a>
 </div>
 
 ```python
@@ -153,6 +185,13 @@ const db_name = "my_database";
 
 // 1. Set up a Milvus Client
 client = new MilvusClient({ address, db_name });
+```
+
+```go
+client, _ := client.NewClient(ctx, client.Config{
+    Address: "localhost:19530",
+    DBName:  "my_database",
+})
 ```
 
 ## List databases
